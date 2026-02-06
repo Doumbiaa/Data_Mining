@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Analyse - Apriori</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card { border-radius: 15px; margin-bottom: 25px; border: none; }
+        .card-header { font-weight: bold; border-radius: 15px 15px 0 0 !important; }
+        /* Style pour indiquer que l'image est cliquable */
+        .img-zoom { 
+            cursor: zoom-in; 
+            transition: transform 0.2s; 
+        }
+        .img-zoom:hover { 
+            transform: scale(1.02); 
+        }
+        .interpret { font-size: 0.85rem; color: #666; font-style: italic; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/">🏠 Accueil</a>
+            <a class="navbar-brand" href="/recommandation">Recommandations</a>
+            <span class="navbar-text">IA Data Mining - Visualisation</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="mb-4 fw-bold">Statistiques du Modèle Apriori</h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center">📊 Distribution du Support</div>
+                    <div class="card-body">
+                        <img src="data:image/png;base64,{{ plot_support }}" class="img-fluid img-zoom" 
+                             onclick="openModal(this.src, 'Distribution du Support')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white text-center">📍 Support vs Confiance</div>
+                    <div class="card-body">
+                        <img src="data:image/png;base64,{{ plot_scatter }}" class="img-fluid img-zoom" 
+                             onclick="openModal(this.src, 'Support vs Confiance')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white text-center">📈 Top 10 des Meilleures Liaisons</div>
+                    <div class="card-body">
+                        <img src="data:image/png;base64,{{ plot_lift }}" class="img-fluid img-zoom" 
+                             onclick="openModal(this.src, 'Top 10 Lift')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-dark text-white text-center">🕸️ Cartographie du Réseau</div>
+                    <div class="card-body">
+                        <img src="data:image/png;base64,{{ plot_network }}" class="img-fluid img-zoom" 
+                             onclick="openModal(this.src, 'Réseau des Recommandations')">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="graphModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Visualisation agrandie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="" id="modalImage" class="img-fluid">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openModal(imageSrc, title) {
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('modalTitle').innerText = title;
+            var myModal = new bootstrap.Modal(document.getElementById('graphModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html>

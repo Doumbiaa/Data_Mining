@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+    .main-container {
+        margin-top: 50px;
+        max-width: 700px;
+    }
+    .card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    .btn-primary {
+        background-color: #4834d4;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    .btn-primary:hover {
+        background-color: #686de0;
+        transform: translateY(-2px);
+    }
+    .product-input {
+        border-radius: 10px;
+        padding: 15px;
+        border: 2px solid #eee;
+        text-transform: uppercase;
+    }
+    .recommendation-item {
+        border: none;
+        border-left: 5px solid #4834d4;
+        background: white;
+        margin-bottom: 10px;
+        border-radius: 8px !important;
+        transition: transform 0.2s;
+    }
+    .recommendation-item:hover {
+        transform: translateX(10px);
+        background-color: #f8f9ff;
+    }
+    .badge-ai {
+        background-color: #ebfbee;
+        color: #27ae60;
+        font-size: 0.75rem;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container main-container">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-dark">Système de Recommandation</h1>
+        <p class="text-muted">Analyse de panier de consommation (Modèle Apriori)</p>
+    </div>
+
+    <div class="card p-4 mb-4">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="product" class="form-label fw-bold text-secondary">Produit acheté :</label>
+                <input type="text" 
+                       name="product" 
+                       id="product" 
+                       class="form-control product-input shadow-sm" 
+                       placeholder="EX: LUNCH BAG APPLE DESIGN..." 
+                       value="{{ query }}" 
+                       required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 shadow-sm">Trouver des produits associés</button>
+        </form>
+    </div>
+
+    {% if recos is not none %}
+    <div class="results-section mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Les clients ont aussi acheté :</h5>
+            <span class="badge-ai">IA DATA MINING</span>
+        </div>
+
+        {% if recos %}
+            <div class="list-group">
+                {% for item in recos %}
+                    <div class="list-group-item recommendation-item shadow-sm d-flex align-items-center">
+                        <div class="me-3 fs-4">📦</div>
+                        <div class="fw-semibold text-dark">{{ item }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning border-0 shadow-sm text-center py-4">
+                <p class="mb-0">Aucune association forte n'a été trouvée pour <strong>"{{ query }}"</strong>.</p>
+                <small>Conseil : Essayez des termes comme "POSTAGE" ou "LUNCH BAG".</small>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <footer class="text-center mt-5 py-4 text-muted" style="font-size: 0.85rem;">
+        <hr class="w-25 mx-auto mb-3">
+        Projet Data Mining - Master 2 &copy; 2026
+    </footer>
+</div>
+{% endblock %}

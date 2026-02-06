@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Analyse - Segmentation RFM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card { border-radius: 15px; margin-bottom: 25px; border: none; }
+        .card-header { font-weight: bold; border-radius: 15px 15px 0 0 !important; }
+        .img-zoom { cursor: zoom-in; transition: transform 0.2s; }
+        .img-zoom:hover { transform: scale(1.02); }
+    </style>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/">🏠 Accueil</a>
+            <a class="navbar-brand" href="/rfm">Recherche Client</a>
+            <span class="navbar-text text-white">IA Data Mining - Visualisation RFM</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="mb-4 fw-bold text-center">Analyses Graphiques RFM</h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center">📊 Répartition par Segment</div>
+                    <div class="card-body">
+                        <img src="data:image/png;base64,{{ plot_dist }}" class="img-fluid img-zoom" 
+                             onclick="openModal(this.src, 'Répartition des Segments')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-dark text-white text-center">🔥 Heatmap R vs F (Valeur)</div>
+                    <div class="card-body">
+                        <img src="data:image/png;base64,{{ plot_heatmap }}" class="img-fluid img-zoom" 
+                             onclick="openModal(this.src, 'Heatmap Scores Récence vs Fréquence')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white text-center">📉 Récence vs Montant</div>
+                    <div class="card-body">
+                        <img src="data:image/png;base64,{{ plot_rec_mon }}" class="img-fluid img-zoom" 
+                             onclick="openModal(this.src, 'Corrélation Récence / Montant')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white text-center">📈 Fréquence vs Montant</div>
+                    <div class="card-body">
+                        <img src="data:image/png;base64,{{ plot_freq_mon }}" class="img-fluid img-zoom" 
+                             onclick="openModal(this.src, 'Corrélation Fréquence / Montant')">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="graphModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Visualisation agrandie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="" id="modalImage" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openModal(imageSrc, title) {
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('modalTitle').innerText = title;
+            var myModal = new bootstrap.Modal(document.getElementById('graphModal'));
+            myModal.show();
+        }
+    </script>
+</body>
+</html>

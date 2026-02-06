@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    .card { border-radius: 15px; margin-bottom: 25px; border: none; }
+    .card-header { font-weight: bold; border-radius: 15px 15px 0 0 !important; }
+    .img-zoom { cursor: zoom-in; transition: transform 0.2s; }
+    .img-zoom:hover { transform: scale(1.02); }
+</style>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4 fw-bold text-dark">🤖 Dashboard Segmentation IA (K-Means)</h2>
+    
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white text-center">📉 Réduction de Dimension (ACP)</div>
+                <div class="card-body text-center">
+                    <img src="data:image/png;base64,{{ plot_pca }}" class="img-fluid rounded img-zoom" 
+                         onclick="openModal(this.src, 'Réduction de Dimension (ACP)')">
+                    <p class="text-muted mt-2 small">Détermine le nombre de dimensions conservant 95% de l'information.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white text-center">🎯 Performance (Silhouette Score)</div>
+                <div class="card-body text-center">
+                    <img src="data:image/png;base64,{{ plot_silhouette }}" class="img-fluid rounded img-zoom" 
+                         onclick="openModal(this.src, 'Performance (Silhouette Score)')">
+                    <p class="text-muted mt-2 small">Indice de qualité de la séparation des clusters.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white text-center">📍 Projection des Clusters</div>
+                <div class="card-body text-center">
+                    <img src="data:image/png;base64,{{ plot_scatter }}" class="img-fluid rounded img-zoom" 
+                         onclick="openModal(this.src, 'Projection des Clusters (Espace PCA)')">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-info text-white text-center">🍰 Répartition de la Clientèle</div>
+                <div class="card-body text-center">
+                    <img src="data:image/png;base64,{{ plot_pie }}" class="img-fluid rounded img-zoom" 
+                         onclick="openModal(this.src, 'Répartition des segments clients')">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="graphModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="modalTitle">Visualisation agrandie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center bg-light">
+                <img src="" id="modalImage" class="img-fluid rounded shadow-sm">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(imageSrc, title) {
+        // Injection de la source de l'image et du titre dans la modale
+        document.getElementById('modalImage').src = imageSrc;
+        document.getElementById('modalTitle').innerText = title;
+        
+        // Initialisation et affichage de la modale Bootstrap
+        var myModal = new bootstrap.Modal(document.getElementById('graphModal'));
+        myModal.show();
+    }
+</script>
+
+{% endblock %}
