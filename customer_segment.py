@@ -1,8 +1,9 @@
 import pandas as pd
 import os
 
-# Chemin vers le dossier où Flask est lancé 
-BASE_DIR = os.getcwd()
+# Chemin vers le répertoire de travail racine 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 RFM_PATH = os.path.join(BASE_DIR, "rfm_model.pkl")
 
 def get_rfm_data():
