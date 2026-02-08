@@ -1,8 +1,8 @@
 import pandas as pd
 import os
 
-# 🔹 Chemin absolu vers le dossier du fichier
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Chemin vers le dossier où Flask est lancé 
+BASE_DIR = os.getcwd()
 RFM_PATH = os.path.join(BASE_DIR, "rfm_model.pkl")
 
 def get_rfm_data():
@@ -10,7 +10,6 @@ def get_rfm_data():
     if os.path.exists(RFM_PATH):
         return pd.read_pickle(RFM_PATH)
     return None
-
 
 def get_client_info(customer_id, rfm_df):
     """Récupère les infos d'un client spécifique."""
