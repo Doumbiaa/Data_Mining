@@ -35,10 +35,15 @@ def get_client_info(customer_id, rfm_df):
         # IDs clients stockés en float
         cid = float(customer_id)
 
-        if cid in rfm_df.index:
-            return rfm_df.loc[cid].to_dict()
+        # ✅ Recherche dans la colonne CustomerID au lieu de l'index
+        client = rfm_df[rfm_df['CustomerID'] == cid]
+
+        if client.empty:
+            return None
+
+        # Retourne le dictionnaire de ce client
+        return client.iloc[0].to_dict()
 
     except Exception as e:
         print("Erreur client RFM :", e)
-
-    return None
+        return None
