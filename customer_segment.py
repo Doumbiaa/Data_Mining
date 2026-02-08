@@ -11,7 +11,7 @@ def get_rfm_data():
         if os.path.exists(RFM_PATH):
             rfm_df = pd.read_pickle(RFM_PATH)
 
-            # Sécurité minimale
+            # Vérification minimale
             if rfm_df is None or rfm_df.empty:
                 print("RFM vide ou invalide")
                 return None
@@ -32,17 +32,20 @@ def get_client_info(customer_id, rfm_df):
         if rfm_df is None:
             return None
 
-        # IDs clients stockés en float
         cid = float(customer_id)
 
-        # ✅ Recherche dans la colonne CustomerID au lieu de l'index
-        client = rfm_df[rfm_df['CustomerID'] == cid]
+        #  Cherche dans l'index si CustomerID est l'index
+        if 'CustomerID' not in rfm_df.columns and cid in rfm_df.index:
+            return rfm_df.loc[cid].to_dict()
 
-        if client.empty:
-            return None
+        #  Sinon cherche dans la colonne CustomerID
+        if 'CustomerID' in rfm_df.columns:
+            client = rfm_df[rfm_df['CustomerID'] == cid]
+            if not client.empty:
+                return client.iloc[0].to_dict()
 
-        # Retourne le dictionnaire de ce client
-        return client.iloc[0].to_dict()
+        #  Si rien trouvé
+        return None
 
     except Exception as e:
         print("Erreur client RFM :", e)
